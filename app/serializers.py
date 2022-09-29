@@ -53,7 +53,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only = True)
-    user_id = serializers.IntegerField(write_only = True)
+    # user_id = serializers.IntegerField(write_only = True)
     class Meta:
         model= Profile
         fields = '__all__'

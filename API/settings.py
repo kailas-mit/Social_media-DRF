@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'app',
     'rest_framework.authtoken',
-    "corsheaders",
+    'corsheaders',
+    'post',
+    'comment',
+    'votes',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    # "django.middleware.common.CommonMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 

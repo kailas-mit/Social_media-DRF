@@ -1,3 +1,4 @@
+from operator import ge
 from django.shortcuts import render
 
 from rest_framework.permissions import AllowAny,IsAuthenticated
@@ -33,7 +34,6 @@ class Userlogin(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print(created)
         context = {
             "user_id":user.id,
             "user_name":user.username,
@@ -44,6 +44,22 @@ class Userlogin(ObtainAuthToken):
 
 class Profileview(generics.ListAPIView, generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset=Profile.objects.all()
     serializer_class= ProfileSerializer
+
+
+class profiledetailview(generics.RetrieveAPIView, generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset=Profile.objects.all()
+    serializer_class= ProfileSerializer
+
+
+
+
+class Settingview(generics.ListCreateAPIView):
+  authentication_classes = [TokenAuthentication]
+  permission_classes = [IsAuthenticated]
+
+
