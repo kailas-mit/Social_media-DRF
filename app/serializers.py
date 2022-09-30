@@ -15,6 +15,13 @@ class UserSerializer(serializers.ModelSerializer):
     fields = ["id", "first_name", "last_name", "username"]
 
 
+# class CreateUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('id', 'username', 'password')
+#         extra_kwargs = {'password': {'write_only': True}}
+
+
 #Serializer to Register User
 class RegisterSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(

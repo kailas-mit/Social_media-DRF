@@ -22,6 +22,8 @@ urlpatterns = [
   path('',include('app.urls')),
   path('',include('post.urls')),
   path('',include('comment.urls')),
+  path('',include('votes.urls')),
+  path('',include('followers.urls')),
   path('api-token-auth', views.obtain_auth_token)
 ]
 
