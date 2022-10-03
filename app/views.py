@@ -43,15 +43,15 @@ class Userlogin(ObtainAuthToken):
 
 
 class Profileview(generics.ListAPIView, generics.CreateAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset=Profile.objects.all()
     serializer_class= ProfileSerializer
 
 
 class profiledetailview(generics.RetrieveAPIView, generics.UpdateAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset=Profile.objects.all()
     serializer_class= ProfileSerializer
 

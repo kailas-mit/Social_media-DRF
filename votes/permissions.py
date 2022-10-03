@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 class hasSelfVotedOrReadonly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if self.request.method in permissions.SAFE_METHODS:
+        if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.up_vote_by == request.user or obj.down_vote_by== request.user
+        return obj.liked_by == request.user or obj.diss_liked_by== request.user
    

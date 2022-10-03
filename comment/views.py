@@ -1,15 +1,16 @@
+from email import message
 from django.shortcuts import render
 from requests import request
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .models import Comment
-from .serializers import CommentSerializer
+from .models import Comment,Reply
+from .serializers import CommentSerializer,ReplySerializer
 from rest_framework.authentication import TokenAuthentication
 
 
 class Commentview(generics.ListCreateAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
     queryset=Comment.objects.all()
     serializer_class= CommentSerializer
     def perform_create(self, serializer):
@@ -17,10 +18,17 @@ class Commentview(generics.ListCreateAPIView):
 
 
 class commentdetailview(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
     queryset=Comment.objects.all()
     serializer_class= CommentSerializer
+
+
+class Replycommentview(generics.ListCreateAPIView):
+    queryset=Reply
+    serializer_class=ReplySerializer
+    def perform_create(self, serializer):
+        serializer.save(message=self.request.user)
 
 
 

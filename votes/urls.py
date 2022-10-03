@@ -1,7 +1,7 @@
-from .views import Votesview
+from .views import Votesview,Likesview
 from django.urls import path
 
 
 urlpatterns = [
-  path('vote/',Votesview.as_view())
+  path('like/',Likesview.as_view())
 ]
