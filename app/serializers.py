@@ -60,6 +60,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only = True)
+    followers_count = serializers.IntegerField(source = 'get_followers_count')
+    following_count = serializers.IntegerField(source = 'get_following_count')
+    profile_belongs_to_authenticated_user = serializers.BooleanField(source = 'get_profile_belongs_to_authenticated_user')
+    follow_status = serializers.CharField(source = 'get_follow_status')
+
     # user_id = serializers.IntegerField(write_only = True)
     class Meta:
         model= Profile

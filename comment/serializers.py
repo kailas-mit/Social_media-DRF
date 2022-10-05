@@ -1,13 +1,9 @@
-from dataclasses import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Comment,Reply
 
-class CommentSerializer(serializers.ModelSerializer):
-    commented_by=serializers.ReadOnlyField(source='user.username')
-    class Meta:
-        model= Comment
-        fields=('id','comment','comment_image','comment_date','commented_by','post')
+
+
 
 
 class ReplySerializer(serializers.ModelSerializer):
@@ -16,4 +12,16 @@ class ReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply
-        fields = ['sender', 'receiver', 'message', 'timestamp']
+        # fields = ['comments','sender', 'receiver', 'message', 'timestamp']
+        fields = "__all__"
+
+
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    commented_by=serializers.ReadOnlyField(source='user.username')
+    reply=ReplySerializer(many=True, read_only=True)
+    
+    class Meta:
+        model= Comment
+        fields=('id','comment','comment_date','commented_by','post', 'reply')

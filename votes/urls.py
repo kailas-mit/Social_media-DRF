@@ -1,4 +1,4 @@
-from .views import Votesview,Likesview
+from .views import Likesview
 from django.urls import path
 
 

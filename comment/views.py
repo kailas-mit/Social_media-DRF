@@ -1,4 +1,5 @@
 from email import message
+from django.dispatch import receiver
 from django.shortcuts import render
 from requests import request
 from rest_framework import generics
@@ -25,10 +26,10 @@ class commentdetailview(generics.RetrieveUpdateDestroyAPIView):
 
 
 class Replycommentview(generics.ListCreateAPIView):
-    queryset=Reply
+    queryset=Reply.objects.all()
     serializer_class=ReplySerializer
     def perform_create(self, serializer):
-        serializer.save(message=self.request.user)
+        serializer.save(sender=self.request.user)
 
 
 
