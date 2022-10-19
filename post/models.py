@@ -2,7 +2,6 @@ from email.policy import default
 from django.db import models
 from user_auth.models import User
 
-from django_currentuser.middleware import get_current_authenticated_user
 
 
 class Post(models.Model):

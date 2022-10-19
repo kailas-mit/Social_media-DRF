@@ -27,5 +27,6 @@ urlpatterns = [
     path('',include('like.urls')),
     path('',include('follower.urls')),
     path('',include('connections.urls')),
+    path('',include('chat.urls')),
     path('api-token-auth', views.obtain_auth_token)
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

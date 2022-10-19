@@ -1,7 +1,6 @@
 from django.db import models
 from post.models import Post
 from user_auth.models import User
-from django_currentuser.middleware import get_current_authenticated_user
 
 
 class Like(models.Model):

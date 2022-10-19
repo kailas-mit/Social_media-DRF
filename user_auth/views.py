@@ -11,7 +11,6 @@ from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from .models import User
 from rest_framework import permissions
-from .models import get_current_authenticated_user
 
 
 # Class based view to Get User Details using Token Authentication

@@ -1,12 +1,13 @@
-from django.dispatch import receiver
+from user_auth.serializers import ProfileSerializer
 from .models import Connection
-from .serializers import ConnectionSerializer,ConnectingSerializer
+from .serializers import Alluserlist, ConnectionSerializer,ConnectingSerializer,ContactSerializer,FriendSerializer,ProfilevSerializer,UserSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from user_auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view,permission_classes,authentication_classes
+from user_auth.models import User
 
 
 
@@ -55,24 +56,39 @@ class Connectionview(generics.ListCreateAPIView):
             #     already_requested.delete()
             #     return Response({'status': 'already request sent'})
             
-
-        return Response(serilizers.data,status=status.HTTP_200_OK)
-
-
+        return Response({'error' : 'bad request'},status=status.HTTP_404_NOT_FOUND)
+        # return Response(serilizers.data,status=status.HTTP_200_OK)
 
 
 
 
+
+
+
+
+# class Request_view(generics.ListAPIView):
+#     permission_classes=[IsAuthenticated]
+#     serializer_class=ConnectingSerializer
+#     queryset=Connection.objects.all()
+#     def get_queryset(self):
+#         receiver=self.request.user
+#         print(receiver)        
+#         return self.queryset.filter(receiver = self.request.user, status = 'pending')
 
 
 class Request_view(generics.ListAPIView):
     permission_classes=[IsAuthenticated]
-    serializer_class=ConnectingSerializer
-    queryset=Connection.objects.all()
+    serializer_class=ProfilevSerializer
+    # queryset=Connection.objects.filter(status='pending')
+    queryset=Connection.objects.exclude(status='accept')
     def get_queryset(self):
-        receiver=self.request.user
-        print(receiver)        
-        return self.queryset.filter(receiver = self.request.user, status = 'pending') 
+        query=self.queryset.filter(receiver=self.request.user)
+        user_query=User.objects.filter(id__in=query.values_list('sender_id', flat=True).distinct())
+        # receiver=self.request.user
+        print(user_query)  
+        return user_query      
+        # return self.queryset.filter(receiver = self.request.user, status = 'pending')
+
 
 class Request_views(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=[IsAuthenticated]
@@ -81,7 +97,9 @@ class Request_views(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         receiver=self.request.user
         print(receiver)        
-        return self.queryset.filter(receiver = self.request.user) 
+        return self.queryset.filter(receiver = self.request.user)
+
+    
 
 
 
@@ -94,13 +112,47 @@ class Request_accept_view(generics.ListAPIView):
     def get_queryset(self):
         receiver=self.request.user
         print(receiver)        
-        return self.queryset.filter(receiver = self.request.user, status = 'accept') 
+        return self.queryset.filter(receiver = self.request.user, status = 'accept')
+
+
+    
+class contact(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
+    serializer_class=ProfileSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['sender','receiver','status']
+    queryset=Connection.objects.filter(status='accept')
+    def get_queryset(self):
+        query=self.queryset.filter(sender=self.request.user) | self.queryset.filter(receiver=self.request.user)
+        user_query=User.objects.filter(id__in=query.values_list('sender_id', flat=True).distinct()) | User.objects.filter(id__in=query.values_list('receiver_id', flat=True).distinct())
+        print(query.values_list('receiver_id', flat=True).distinct())
+        user_query=user_query.exclude(id=self.request.user.id)
+        return user_query
+    #     # if self.queryset.filter(receiver_id = self.request.user, status = 'accept'):
+    #     return Connection.objects.filter(receiver=self.request.user,status='accept') and Connection.objects.filter(sender=self.request.user,status='accept')
+
+
+class FriendsConnect(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
+    serializer_class= ProfilevSerializer
+    queryset=Connection.objects.filter(status='pending')
+    def get_queryset(self):
+        query=self.queryset.filter(sender=self.request.user) | self.queryset.filter(receiver=self.request.user)
+        user_query= User.objects.filter(id__in=query.values_list('sender_id', flat=True).distinct()) | User.objects.filter(id__in=query.values_list('receiver_id', flat=True).distinct())
+        print(query.values_list('receiver_id', flat=True).distinct())
+        users_query=user_query.exclude(id=self.request.user.id)
+        return users_query
+        
 
 
 
 
 
-
+class Userlistview(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
+    serializer_class=Alluserlist
+    queryset=User.objects.all()
+    
 
 
 
@@ -204,8 +256,16 @@ class Request_accept_view(generics.ListAPIView):
 
 
 
-# login:-09:45
-# Date:-12/10/2022
+# login:-10:00
+# Date:-18/10/2022
+
+
+# - implement in profileview of user not in connected list 
+# - implement in connected profile view  
+# - Data Structures For Python-node
+
+
+# logout:-19:40
 
 
 # - created send connection request
@@ -213,6 +273,3 @@ class Request_accept_view(generics.ListAPIView):
 # - implement in received request
 # - working on status of connection
 # - cross section sender to receiver and receiver to sender also in progress
-
-
-# logout:-18:50

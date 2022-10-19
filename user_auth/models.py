@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django_currentuser.middleware import get_current_authenticated_user
 # from follower.models import Followers
 
 
