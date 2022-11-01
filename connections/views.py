@@ -256,16 +256,14 @@ class Userlistview(generics.ListAPIView):
 
 
 
-# login:-10:00
-# Date:-18/10/2022
+# login:-09:45
+# Date:-19/10/2022
 
 
-# - implement in profileview of user not in connected list 
-# - implement in connected profile view  
-# - Data Structures For Python-node
+# - Data Structures root node,Linked list, binary search, Hash table
 
 
-# logout:-19:40
+# logout:-18:35
 
 
 # - created send connection request

@@ -47,7 +47,7 @@ class Profileview(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class= ProfileSerializer
-    queryset=User.objects.all()
+    queryset=User.objects.all()  
     def get(self, request, *args, **kwargs):
       obj = request.user
       return Response (self.serializer_class(instance=obj).data)
